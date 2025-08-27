@@ -1,0 +1,160 @@
+class Animal:
+    """Base class for all animals."""
+    
+    def __init__(self, name, habitat):
+        self.name = name
+        self.habitat = habitat
+    
+    def move(self):
+        """Base move method - to be overridden by subclasses."""
+        return f"{self.name} moves in its own way."
+    
+    def speak(self):
+        """Base speak method - to be overridden by subclasses."""
+        return f"{self.name} makes a sound."
+
+class Bird(Animal):
+    def __init__(self, name, habitat, wingspan):
+        super().__init__(name, habitat)
+        self.wingspan = wingspan
+    
+    def move(self):
+        return f"{self.name} flies through the air with its {self.wingspan}cm wingspan! 🕊️"
+    
+    def speak(self):
+        return f"{self.name} chirps melodiously! 🎵"
+
+class Fish(Animal):
+    def __init__(self, name, habitat, fin_count):
+        super().__init__(name, habitat)
+        self.fin_count = fin_count
+    
+    def move(self):
+        return f"{self.name} swims gracefully through the water using its {self.fin_count} fins! 🐟"
+    
+    def speak(self):
+        return f"{self.name} makes bubble sounds! 💦"
+
+class Mammal(Animal):
+    def __init__(self, name, habitat, leg_count):
+        super().__init__(name, habitat)
+        self.leg_count = leg_count
+    
+    def move(self):
+        if self.leg_count == 4:
+            return f"{self.name} runs on all fours across the {self.habitat}! 🐾"
+        else:
+            return f"{self.name} walks on {self.leg_count} legs! 🚶"
+    
+    def speak(self):
+        return f"{self.name} makes a mammalian sound! 🐕"
+
+class Snake(Animal):
+    def __init__(self, name, habitat, length):
+        super().__init__(name, habitat)
+        self.length = length
+    
+    def move(self):
+        return f"{self.name} slithers silently through the {self.habitat}! 🐍"
+    
+    def speak(self):
+        return f"{self.name} hisses! 🐍💨"
+
+# Vehicle classes demonstrating polymorphism
+class Vehicle:
+    """Base class for all vehicles."""
+    
+    def __init__(self, name, max_speed):
+        self.name = name
+        self.max_speed = max_speed
+    
+    def move(self):
+        """Base move method for vehicles."""
+        return f"{self.name} is moving."
+    
+    def stop(self):
+        return f"{self.name} comes to a stop. 🛑"
+
+class Car(Vehicle):
+    def __init__(self, name, max_speed, door_count):
+        super().__init__(name, max_speed)
+        self.door_count = door_count
+    
+    def move(self):
+        return f"{self.name} drives on the road at up to {self.max_speed} km/h! 🚗"
+    
+    def honk(self):
+        return f"{self.name} honks: Beep beep! 📯"
+
+class Plane(Vehicle):
+    def __init__(self, name, max_speed, wingspan):
+        super().__init__(name, max_speed)
+        self.wingspan = wingspan
+    
+    def move(self):
+        return f"{self.name} flies through the sky at {self.max_speed} km/h with a {self.wingspan}m wingspan! ✈️"
+    
+    def takeoff(self):
+        return f"{self.name} takes off into the sky! 🛫"
+
+class Boat(Vehicle):
+    def __init__(self, name, max_speed, displacement):
+        super().__init__(name, max_speed)
+        self.displacement = displacement
+    
+    def move(self):
+        return f"{self.name} sails through the water at {self.max_speed} knots! ⛵"
+    
+    def anchor(self):
+        return f"{self.name} drops anchor in the water! ⚓"
+
+# Demonstration function
+def demonstrate_movement(objects):
+    """Demonstrate polymorphism by calling move() on different objects."""
+    print(f"\n{'='*50}")
+    print("MOVEMENT DEMONSTRATION!")
+    print(f"{'='*50}")
+    
+    for obj in objects:
+        print(f"\n{obj.__class__.__name__}: {obj.name}")
+        print(obj.move())
+        
+        # Demonstrate additional methods based on type
+        if isinstance(obj, Car):
+            print(obj.honk())
+        elif isinstance(obj, Plane):
+            print(obj.takeoff())
+        elif isinstance(obj, Boat):
+            print(obj.anchor())
+        elif isinstance(obj, Bird):
+            print(obj.speak())
+        elif isinstance(obj, Fish):
+            print(obj.speak())
+
+# Main execution
+if __name__ == "__main__":
+    # Create various animals and vehicles
+    eagle = Bird("Bald Eagle", "mountains", 200)
+    salmon = Fish("Atlantic Salmon", "rivers", 7)
+    cheetah = Mammal("Cheetah", "savannah", 4)
+    python = Snake("Python", "jungle", 300)
+    
+    mustang = Car("Ford Mustang", 250, 2)
+    boeing = Plane("Boeing 747", 920, 68)
+    yacht = Boat("Luxury Yacht", 30, 5000)
+    
+    # Demonstrate polymorphism
+    moving_objects = [eagle, salmon, cheetah, python, mustang, boeing, yacht]
+    demonstrate_movement(moving_objects)
+    
+    # Additional demonstration
+    print(f"\n{'='*50}")
+    print("ADDITIONAL FEATURES DEMONSTRATION!")
+    print(f"{'='*50}")
+    
+    # Show that different objects can have the same method name but different implementations
+    for obj in moving_objects:
+        if hasattr(obj, 'speak'):
+            print(f"\n{obj.name}: {obj.speak()}")
+        if hasattr(obj, 'stop'):
+            print(f"{obj.name}: {obj.stop()}")
