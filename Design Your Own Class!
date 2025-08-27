@@ -1,0 +1,135 @@
+class Superhero:
+    """A class representing a superhero with unique powers and abilities."""
+    
+    def __init__(self, name, secret_identity, powers, strength_level, is_alive=True):
+        self.name = name
+        self.secret_identity = secret_identity
+        self.powers = powers  # List of powers
+        self.strength_level = strength_level  # 1-100 scale
+        self.is_alive = is_alive
+        self.energy_level = 100
+    
+    def use_power(self, power_name):
+        """Use a specific power, consuming energy."""
+        if power_name in self.powers:
+            if self.energy_level >= 20:
+                self.energy_level -= 20
+                return f"{self.name} uses {power_name}! Energy remaining: {self.energy_level}%"
+            else:
+                return f"Not enough energy to use {power_name}! Only {self.energy_level}% remaining."
+        else:
+            return f"{self.name} doesn't have the power: {power_name}"
+    
+    def rest(self):
+        """Rest to regain energy."""
+        self.energy_level = min(100, self.energy_level + 30)
+        return f"{self.name} rests. Energy level: {self.energy_level}%"
+    
+    def fight_villain(self, villain_strength):
+        """Engage in combat with a villain."""
+        if self.strength_level > villain_strength:
+            return f"{self.name} defeats the villain! 🎉"
+        elif self.strength_level == villain_strength:
+            return "It's a draw! ⚔️"
+        else:
+            return f"{self.name} is defeated by the villain! 💥"
+    
+    def reveal_identity(self):
+        """Reveal the superhero's secret identity."""
+        return f"{self.name}'s secret identity is: {self.secret_identity}"
+    
+    def __str__(self):
+        return f"Superhero: {self.name}, Powers: {', '.join(self.powers)}, Strength: {self.strength_level}/100"
+
+# Inheritance layer - Specialized superhero types
+class FlyingSuperhero(Superhero):
+    """A superhero with flying abilities."""
+    
+    def __init__(self, name, secret_identity, powers, strength_level, max_altitude, flight_speed):
+        super().__init__(name, secret_identity, powers, strength_level)
+        self.max_altitude = max_altitude  # in meters
+        self.flight_speed = flight_speed  # in km/h
+        self.is_flying = False
+    
+    def fly(self):
+        """Start flying."""
+        if "flight" in self.powers:
+            self.is_flying = True
+            return f"{self.name} takes to the skies! ✈️"
+        else:
+            return f"{self.name} cannot fly!"
+    
+    def land(self):
+        """Land from flight."""
+        if self.is_flying:
+            self.is_flying = False
+            return f"{self.name} lands safely. 🛬"
+        return f"{self.name} wasn't flying."
+    
+    def aerial_attack(self):
+        """Perform an aerial attack."""
+        if self.is_flying:
+            return f"{self.name} performs a devastating aerial attack! 💥"
+        return f"{self.name} needs to be flying to perform an aerial attack!"
+
+class TechSuperhero(Superhero):
+    """A superhero who relies on technology and gadgets."""
+    
+    def __init__(self, name, secret_identity, powers, strength_level, gadgets):
+        super().__init__(name, secret_identity, powers, strength_level)
+        self.gadgets = gadgets  # List of gadgets
+        self.gadget_energy = {gadget: 100 for gadget in gadgets}
+    
+    def use_gadget(self, gadget_name):
+        """Use a specific gadget."""
+        if gadget_name in self.gadgets:
+            if self.gadget_energy[gadget_name] >= 25:
+                self.gadget_energy[gadget_name] -= 25
+                return f"{self.name} uses {gadget_name}! Energy remaining: {self.gadget_energy[gadget_name]}%"
+            else:
+                return f"{gadget_name} needs recharging! Only {self.gadget_energy[gadget_name]}% energy left."
+        else:
+            return f"{self.name} doesn't have the gadget: {gadget_name}"
+    
+    def recharge_gadgets(self):
+        """Recharge all gadgets."""
+        for gadget in self.gadgets:
+            self.gadget_energy[gadget] = 100
+        return f"All gadgets recharged to 100%! ⚡"
+
+# Demonstration
+if __name__ == "__main__":
+    print("=== SUPERHERO DEMONSTRATION ===\n")
+    
+    # Create different types of superheroes
+    superman = FlyingSuperhero("Superman", "Clark Kent", 
+                              ["flight", "super strength", "heat vision", "x-ray vision"], 
+                              95, 10000, 2000)
+    
+    iron_man = TechSuperhero("Iron Man", "Tony Stark",
+                            ["flight", "repulsor beams", "AI assistance"],
+                            85, ["Repulsors", "Unibeam", "Rockets", "AI Jarvis"])
+    
+    spider_man = Superhero("Spider-Man", "Peter Parker",
+                          ["spider-sense", "wall-crawling", "web-shooting"],
+                          75)
+    
+    # Demonstrate polymorphism and unique methods
+    heroes = [superman, iron_man, spider_man]
+    
+    for hero in heroes:
+        print(f"\n--- {hero.name} ---")
+        print(hero)
+        print(hero.use_power("flight" if "flight" in hero.powers else hero.powers[0]))
+        
+        # Demonstrate specialized methods based on class type
+        if isinstance(hero, FlyingSuperhero):
+            print(hero.fly())
+            print(hero.aerial_attack())
+            print(hero.land())
+        elif isinstance(hero, TechSuperhero):
+            print(hero.use_gadget("Repulsors"))
+            print(hero.recharge_gadgets())
+        
+        print(hero.fight_villain(80))
+        print(hero.reveal_identity())
